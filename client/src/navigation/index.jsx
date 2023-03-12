@@ -4,8 +4,9 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Menu from '../pages/Menu';
-import Cart from '../pages/Cart';
+import Cart from "../pages/Cart/index";
 import PaymentSuccess from '../pages/PaymentSuccess';
+
 
 const Navigation = () => {
     return (
