@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { ProductPreviewCard } from './ProductsPreviewCard';
+import React, { useState, useEffect } from "react";
+import { ProductPreviewCard } from "./ProductsPreviewCard";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { AddProduct } from './AddProduct';
+import { useDispatch } from "react-redux";
+import { addToCart } from "../stores/cart/cartSlice";
+
 
 export const ProductsPreview = () => {
-
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
 
     const responsive = {
         superLargeDesktop: {
@@ -30,26 +32,27 @@ export const ProductsPreview = () => {
 
     useEffect(() => {
         fetch('http://localhost:8080/api/products')
-        .then(responce => responce.json())
-        .then(data => setProducts(data?.data))
-        .catch(e => console.log(e))
-    }, []);
+            .then(response => response.json())
+            .then(data => setProducts(data?.data))
+            .catch(e => console.log(e))
+    }, [])
 
     const onAddProduct = (product) => {
-        console.log(product)
+        dispatch(addToCart(product))
     }
-
+    
     return (
-        <div className="container mx-auto pb-4 w-2/3 text-black bg-slate-300" >
-            <h2>Products</h2>
-            <Carousel responsive={responsive} >
-                {
-                    products.length > 0 && products.map((product, index) => {
-                        (<div className='w-full p-3'> 
-                        <ProductPreviewCard key={index} product={product} onAddProduct={onAddProduct}/>
-                        </div>)
-                    })
-                }
+        <div className="container mx-auto pb-4 w-2/3 text-white bg-black">
+            <Carousel responsive={responsive}>
+            {
+                products.length > 0 && products.map((product, index) => {
+                    return (
+                        <div className="w-full p-3">
+                            <ProductPreviewCard key={index} product={product} onAddProduct={onAddProduct} />
+                        </div>
+                    )
+                })
+            }
             </Carousel>
         </div>
     )
